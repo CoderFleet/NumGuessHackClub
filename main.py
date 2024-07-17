@@ -2,12 +2,21 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 
-# Global variables
+# GLOBAL VARS
 minimum_number = 1
 maximum_number = 100
 secret_number = 0
 attempts_left = 5
 guess_history = []
+
+theme = {
+    "primary_bg": "#2c3e50",
+    "secondary_bg": "#34495e",
+    "primary_fg": "#ecf0f1",
+    "secondary_fg": "#f3d912",
+    "button_bg": "#2980b9",
+    "button_fg": "#ffffff",
+}
 
 def start_game():
     global secret_number, attempts_left, guess_history
@@ -85,50 +94,49 @@ def toggle_mode():
 
 root = tk.Tk()
 root.title("Number Guessing Game")
+root.configure(bg=theme["primary_bg"])
 
-# Menu bar
-menubar = tk.Menu(root)
+menubar = tk.Menu(root, bg=theme["primary_bg"], fg=theme["primary_fg"])
 root.config(menu=menubar)
 
-game_menu = tk.Menu(menubar, tearoff=0)
+game_menu = tk.Menu(menubar, tearoff=0, bg=theme["secondary_bg"], fg=theme["primary_fg"])
 game_menu.add_command(label="New Game", command=start_game)
 game_menu.add_command(label="Instructions", command=show_instructions)
 game_menu.add_separator()
 game_menu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="Game", menu=game_menu)
 
-# Widgets
-lbl_title = tk.Label(root, text="Welcome to the Number Guessing Game!")
+lbl_title = tk.Label(root, text="Welcome to the Number Guessing Game!", font=("Helvetica", 16), bg=theme["primary_bg"], fg=theme["primary_fg"])
 lbl_title.pack(pady=10)
 
-btn_start = tk.Button(root, text="Start Game", command=start_game)
+btn_start = tk.Button(root, text="Start Game", command=start_game, bg=theme["button_bg"], fg=theme["button_fg"], font=("Arial", 12, "bold"))
 btn_start.pack(pady=5)
 
-lbl_result = tk.Label(root, text="Press 'Start Game' to begin.")
+lbl_result = tk.Label(root, text="Press 'Start Game' to begin.", font=("Verdana", 12), bg=theme["primary_bg"], fg=theme["primary_fg"])
 lbl_result.pack(pady=10)
 
-entry_guess = tk.Entry(root, width=20, state=tk.DISABLED)
+entry_guess = tk.Entry(root, width=20, state=tk.DISABLED, font=("Arial", 12))
 entry_guess.pack(pady=5)
 
-btn_check = tk.Button(root, text="Check Guess", command=check_guess, state=tk.DISABLED)
+btn_check = tk.Button(root, text="Check Guess", command=check_guess, state=tk.DISABLED, bg=theme["button_bg"], fg=theme["button_fg"], font=("Arial", 12, "bold"))
 btn_check.pack(pady=5)
 
-lbl_guess_history = tk.Label(root, text="", wraplength=300)
+lbl_guess_history = tk.Label(root, text="", wraplength=300, font=("Arial", 12), bg=theme["primary_bg"], fg=theme["primary_fg"])
 lbl_guess_history.pack(pady=5)
 
-btn_clear_history = tk.Button(root, text="Clear Guess History", command=clear_guess_history)
+btn_clear_history = tk.Button(root, text="Clear Guess History", command=clear_guess_history, bg=theme["button_bg"], fg=theme["button_fg"], font=("Arial", 12, "bold"))
 btn_clear_history.pack(pady=5)
 
-lbl_mode = tk.Label(root, text=f"Current mode: {'Easy' if maximum_number == 50 else 'Hard'}")
+lbl_mode = tk.Label(root, text=f"Current mode: {'Easy' if maximum_number == 50 else 'Hard'}", font=("Arial", 12), bg=theme["primary_bg"], fg=theme["primary_fg"])
 lbl_mode.pack(pady=5)
 
-btn_toggle_mode = tk.Button(root, text="Hard Mode", command=toggle_mode)
+btn_toggle_mode = tk.Button(root, text="Hard Mode", command=toggle_mode, bg=theme["button_bg"], fg=theme["button_fg"], font=("Arial", 12, "bold"))
 btn_toggle_mode.pack(pady=5)
 
-btn_reveal = tk.Button(root, text="Reveal Number", command=reveal_number, state=tk.DISABLED)
+btn_reveal = tk.Button(root, text="Reveal Number", command=reveal_number, state=tk.DISABLED, bg=theme["button_bg"], fg=theme["button_fg"], font=("Arial", 12, "bold"))
 btn_reveal.pack(pady=5)
 
-status_bar = tk.Label(root, text="Attempts left: 5", bd=1, relief=tk.SUNKEN, anchor=tk.W)
+status_bar = tk.Label(root, text="Attempts left: 5", bd=1, relief=tk.SUNKEN, anchor=tk.W, font=("Arial", 12), bg=theme["secondary_bg"], fg=theme["primary_fg"])
 status_bar.pack(side=tk.BOTTOM, fill=tk.X)
 
 root.mainloop()
