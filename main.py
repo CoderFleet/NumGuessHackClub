@@ -11,21 +11,34 @@ def start_game():
     entry_guess.config(state=tk.NORMAL)
     btn_check.config(state=tk.NORMAL)
     btn_start.config(state=tk.DISABLED)
+    btn_reveal.config(state=tk.DISABLED)
     status_bar.config(text="Attempts left: 5")
     lbl_guess_history.config(text="")
+    lbl_range.config(text="Range: 1 - 100")
 
 def check_guess():
     global attempts_left, guess_history
-    guess = int(entry_guess.get())
+    try:
+        guess = int(entry_guess.get())
+    except ValueError:
+        messagebox.showerror("Error", "Please enter a valid number.")
+        return
+    
+    if guess < 1 or guess > 100:
+        messagebox.showerror("Error", "Please enter a number between 1 and 100.")
+        return
+    
     guess_history.append(guess)
     lbl_guess_history.config(text=f"Previous guesses: {guess_history}")
     attempts_left -= 1
     status_bar.config(text=f"Attempts left: {attempts_left}")
+    
     if guess == secret_number:
         lbl_result.config(text=f"Congratulations! You guessed the number {secret_number} correctly.")
         entry_guess.config(state=tk.DISABLED)
         btn_check.config(state=tk.DISABLED)
         btn_start.config(state=tk.NORMAL)
+        btn_reveal.config(state=tk.NORMAL)
     else:
         if attempts_left > 0:
             if guess < secret_number:
@@ -37,6 +50,7 @@ def check_guess():
             entry_guess.config(state=tk.DISABLED)
             btn_check.config(state=tk.DISABLED)
             btn_start.config(state=tk.NORMAL)
+            btn_reveal.config(state=tk.NORMAL)
 
 def show_instructions():
     messagebox.showinfo("Instructions", "Guess a number between 1 and 100. You have 5 attempts to guess correctly.")
@@ -45,6 +59,10 @@ def clear_guess_history():
     global guess_history
     guess_history = []
     lbl_guess_history.config(text="")
+
+def reveal_number():
+    lbl_result.config(text=f"The secret number was {secret_number}.")
+    btn_reveal.config(state=tk.DISABLED)
 
 root = tk.Tk()
 root.title("Number Guessing Game")
@@ -81,6 +99,12 @@ lbl_guess_history.pack(pady=5)
 
 btn_clear_history = tk.Button(root, text="Clear Guess History", command=clear_guess_history)
 btn_clear_history.pack(pady=5)
+
+lbl_range = tk.Label(root, text="Range: 1 - 100")
+lbl_range.pack(pady=5)
+
+btn_reveal = tk.Button(root, text="Reveal Number", command=reveal_number, state=tk.DISABLED)
+btn_reveal.pack(pady=5)
 
 status_bar = tk.Label(root, text="Attempts left: 5", bd=1, relief=tk.SUNKEN, anchor=tk.W)
 status_bar.pack(side=tk.BOTTOM, fill=tk.X)
